@@ -3,18 +3,22 @@ Credstore
 
 A Ruby gem that provides an object for working with encrypting and decrypting strings using RSA
 
+	gem install credstore
+
 
 Usage
 ---
 	# Generate Keys using Crypt class
 	require 'credstore'
-	Credstore::Crypt.generate_keys(2048, "./keys", "id_rsa.pub", "id_rsa") # all arguments are optional
+	options = {:length=>2048, :keys_dir=>"./keys", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"}
+	Credstore::Crypt.generate_keys(options)
 	
 	##
 	# working with strings
 	 
 	# private key is optional.. if there is no private key supplied, you can encrypt but cannot decrypt.
-	crypt = Credstore::Crypt.new("./keys", public="id_rsa.pub", private="id_rsa")
+	options = {:keys_dir=>"#{$LIB_BASE_DIR}/tmp/", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"}
+	crypt = Credstore::Crypt.new(options)
 	
 	# Encrypt a string
 	crypt.encrypt_string("Hello World")
@@ -24,7 +28,8 @@ Usage
 	
 	##
 	# working with storage
-	storage = Credstore::Storage(data_path, "credstore.db", "id_rsa.pub", "id_rsa")
+	options = {:keys_dir=>"./keys", :database=>"credstore.db", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"}
+	storage = Credstore::Storage(options)
 	
 	# store encrypted string for key
 	storage.write_key("key", "value")
@@ -37,6 +42,26 @@ Usage
 	storage.key
 	
 	
+Options Explanations
+---
+**Credstore::Crypt.generate_keys options:**
 	
+	* length => length of the key (default is 2048)
+	* keys_dir => the directory that the keys will be written (default is ./)
+	* public_key => the name of the public key (default is id_rsa.pub)
+	* private_key => the name of the private key (default is id_rsa)
 	
+**Credstore::Crypte.new options:**
+
+	* keys_dir => the directory that the key(s) are located (default is ./)
+	* public_key => the public key (default is id_rsa.pub)
+	* private_key => the private key (default is nil.. if there is no private key you will be able to encrypt but not decrypt strings)
+	
+**Credstore::Storage.new options:**
+
+	* keys_dir => the directory that the key(s) are located (default is ./)
+	* database => the path to the storage file for your credstore (default is ./credstore.db)
+	* public_key => the public key (default is id_rsa.pub)
+	* private_key => the private key (default is id_rsa)
+
 	
