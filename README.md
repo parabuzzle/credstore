@@ -51,7 +51,7 @@ Options Explanations
 	* public_key => the name of the public key (default is id_rsa.pub)
 	* private_key => the name of the private key (default is id_rsa)
 	
-**Credstore::Crypte.new options:**
+**Credstore::Crypt.new options:**
 
 	* keys_dir => the directory that the key(s) are located (default is ./)
 	* public_key => the public key (default is id_rsa.pub)
