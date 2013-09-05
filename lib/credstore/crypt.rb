@@ -13,13 +13,15 @@ require 'Base64'
 
 module Credstore
   class Crypt
-    def initialize data_path, public="id_rsa.pub", private=nil
-      @data_path = data_path
-      @public_path = File.join(data_path, public)
-      @public = get_key public
-      if private
-        @private_path = File.join(data_path, private)
-        @private = get_key private
+    def initialize(opts={})
+      opts[:keys_dir] ||= "./"
+      opts[:public_key] ||= "id_rsa.pub"
+      @data_path = opts[:keys_dir]
+      @public_path = File.join(@data_path, opts[:public_key])
+      @public = get_key opts[:public_key]
+      if opts[:private_key]
+        @private_path = File.join(@data_path, opts[:private_key])
+        @private = get_key opts[:private_key]
       end
     end
     
@@ -34,12 +36,12 @@ module Credstore
       @private.private_decrypt Base64::decode64(message)
     end
     
-    def self.generate_keys depth=2048, data_path="./", public="id_rsa.pub", private="id_rsa"
-      unless File.exists?(File.join(data_path, private)) || File.exists?(File.join(data_path, public))
-        keypair  = OpenSSL::PKey::RSA.generate(depth)
-        Dir.mkdir(data_path) unless File.exist?(data_path)
-        File.open(File.join(data_path, private), 'w') { |f| f.write keypair.to_pem } unless File.exists? File.join(data_path, private)
-        File.open(File.join(data_path, public), 'w') { |f| f.write keypair.public_key.to_pem } unless File.exists? File.join(data_path, public)
+    def self.generate_keys(opts={:length=>2048, :keys_dir=>"#{$LIB_BASE_DIR}/tmp/", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"})
+      unless File.exists?(File.join(opts[:keys_dir], opts[:private_key])) || File.exists?(File.join(opts[:keys_dir], opts[:public_key]))
+        keypair  = OpenSSL::PKey::RSA.generate(opts[:length])
+        Dir.mkdir(opts[:keys_dir]) unless File.exist?(opts[:keys_dir])
+        File.open(File.join(opts[:keys_dir], opts[:private_key]), 'w') { |f| f.write keypair.to_pem } unless File.exists? File.join(opts[:keys_dir], opts[:private_key])
+        File.open(File.join(opts[:keys_dir], opts[:public_key]), 'w') { |f| f.write keypair.public_key.to_pem } unless File.exists? File.join(opts[:keys_dir], opts[:public_key])
       end
     end
     

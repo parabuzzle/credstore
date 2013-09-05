@@ -1,7 +1,7 @@
 class TestStorage < Test::Unit::TestCase
   
   def setup
-    @storage = Credstore::Storage.new("./tmp")
+    @storage = Credstore::Storage.new(:keys_dir=>"./tmp")
     @teststring = "Hello World"
     @teststring2 = "Goodbye"
   end

@@ -14,9 +14,13 @@ require 'credstore/crypt'
 module Credstore
   class Storage
     attr_accessor :store
-    def initialize data_path, pstore="credstore.db", public_key="id_rsa.pub", private_key="id_rsa"
-      @crypt = Credstore::Crypt.new(data_path, public_key, private_key)
-      @store = PStore.new(File.join(data_path, pstore), true)
+    def initialize(opts={})
+      opts[:keys_dir] ||= "./"
+      opts[:database] ||= "credstore.db"
+      opts[:public_key] ||= "id_rsa.pub"
+      opts[:private_key] ||= "id_rsa"
+      @crypt = Credstore::Crypt.new({:keys_dir=>opts[:keys_dir], :public_key=>opts[:public_key], :private_key=>opts[:private_key]})
+      @store = PStore.new(File.join(opts[:keys_dir], opts[:database]), true)
     end
     
     def write_key key, value

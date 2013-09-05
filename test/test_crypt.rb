@@ -1,9 +1,15 @@
 class TestCrypt < Test::Unit::TestCase
   
   def setup
-    Credstore::Crypt.generate_keys(2048, "#{$LIB_BASE_DIR}/tmp/", "id_rsa.pub", "id_rsa")
-    @crypt_with_private_key = Credstore::Crypt.new("#{$LIB_BASE_DIR}/tmp", "id_rsa.pub", "id_rsa")
-    @crypt_without_private_key = Credstore::Crypt.new("#{$LIB_BASE_DIR}/tmp")
+    
+    setup_hash={:length=>2048, :keys_dir=>"#{$LIB_BASE_DIR}/tmp/", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"}
+    Credstore::Crypt.generate_keys(setup_hash)
+    
+    no_private_key={:keys_dir=>"#{$LIB_BASE_DIR}/tmp/", :public_key=>"id_rsa.pub", :private_key=>nil}
+    @crypt_without_private_key = Credstore::Crypt.new(no_private_key)
+    
+    with_private_key={:keys_dir=>"#{$LIB_BASE_DIR}/tmp/", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"}
+    @crypt_with_private_key = Credstore::Crypt.new(with_private_key)
   end
   
   def teardown
