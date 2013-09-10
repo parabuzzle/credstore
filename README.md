@@ -1,5 +1,6 @@
 Credstore
 =========
+[![Gem Version](https://badge.fury.io/rb/credstore.png)](http://badge.fury.io/rb/credstore)
 
 A Ruby gem that provides an object for working with encrypting and decrypting strings using RSA
 
@@ -29,7 +30,7 @@ Usage
 	##
 	# working with storage
 	options = {:keys_dir=>"./keys", :database=>"credstore.db", :public_key=>"id_rsa.pub", :private_key=>"id_rsa"}
-	storage = Credstore::Storage(options)
+	storage = Credstore::Storage.new(options)
 	
 	# store encrypted string for key
 	storage.write_key("key", "value")
