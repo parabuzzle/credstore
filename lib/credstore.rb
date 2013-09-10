@@ -12,7 +12,7 @@ $:.unshift File.dirname(__FILE__)
 
 require 'fileutils'
 require 'openssl'
-require 'Base64'
+require 'base64'
 require 'pstore'
 require 'credstore/crypt'
 require 'credstore/storage'

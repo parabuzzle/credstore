@@ -9,7 +9,7 @@
 #   Copyright 2013 Michael Heijmans
 
 require 'openssl'
-require 'Base64'
+require 'base64'
 
 module Credstore
   class Crypt
