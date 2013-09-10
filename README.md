@@ -1,6 +1,7 @@
 Credstore
 =========
 [![Gem Version](https://badge.fury.io/rb/credstore.png)](http://badge.fury.io/rb/credstore)
+[![Build Status](https://travis-ci.org/parabuzzle/credstore.png?branch=master)](https://travis-ci.org/parabuzzle/credstore)
 
 A Ruby gem that provides an object for working with encrypting and decrypting strings using RSA
 
