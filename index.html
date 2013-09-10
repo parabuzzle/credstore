@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Credstore by parabuzzle</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Credstore</h1>
+        <p>A Ruby gem that provides an object for working with encrypting and decrypting strings using RSA</p>
+
+        <p class="view"><a href="https://github.com/parabuzzle/credstore">View the Project on GitHub <small>parabuzzle/credstore</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/parabuzzle/credstore/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/parabuzzle/credstore/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/parabuzzle/credstore">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="credstore" class="anchor" href="#credstore"><span class="octicon octicon-link"></span></a>Credstore</h1>
+
+<p><a href="http://badge.fury.io/rb/credstore"><img src="https://badge.fury.io/rb/credstore.png" alt="Gem Version"></a></p>
+
+<p>A Ruby gem that provides an object for working with encrypting and decrypting strings using RSA</p>
+
+<pre><code>gem install credstore
+</code></pre>
+
+<h2>
+<a name="why-credstore" class="anchor" href="#why-credstore"><span class="octicon octicon-link"></span></a>Why Credstore?</h2>
+
+<p>Because saving passwords and keys for services in plain text is crazy... why not properly encrypt them when you write them out and decrypt them when you read them in to you application?</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre><code># Generate Keys using Crypt class
+require 'credstore'
+options = {:length=&gt;2048, :keys_dir=&gt;"./keys", 
+               :public_key=&gt;"id_rsa.pub", 
+               :private_key=&gt;"id_rsa"}
+Credstore::Crypt.generate_keys(options)
+
+##
+# working with strings
+
+# private key is optional.. if there is no private key supplied, you can encrypt but cannot decrypt.
+options = {:keys_dir=&gt;"#{$LIB_BASE_DIR}/tmp/", 
+               :public_key=&gt;"id_rsa.pub", 
+               :private_key=&gt;"id_rsa"}
+crypt = Credstore::Crypt.new(options)
+
+# Encrypt a string
+crypt.encrypt_string("Hello World")
+
+# Decrypt a string
+crypt.decrypt_string(crypt.encrypt_string("Hello World"))
+
+##
+# working with storage
+options = {:keys_dir=&gt;"./keys", 
+               :database=&gt;"credstore.db", 
+               :public_key=&gt;"id_rsa.pub", 
+               :private_key=&gt;"id_rsa"}
+storage = Credstore::Storage.new(options)
+
+# store encrypted string for key
+storage.write_key("key", "value")
+
+# decrypt and read value for key
+storage.read_key("key")
+
+# read and write keys using the dot operator shortcut
+storage.key="value"
+storage.key
+</code></pre>
+
+<h2>
+<a name="options-explanations" class="anchor" href="#options-explanations"><span class="octicon octicon-link"></span></a>Options Explanations</h2>
+
+<p><strong>Credstore::Crypt.generate_keys options:</strong></p>
+
+<pre><code>* length =&gt; length of the key (default is 2048)
+* keys_dir =&gt; the directory that the keys will be written (default is ./)
+* public_key =&gt; the name of the public key (default is id_rsa.pub)
+* private_key =&gt; the name of the private key (default is id_rsa)
+</code></pre>
+
+<p><strong>Credstore::Crypt.new options:</strong></p>
+
+<pre><code>* keys_dir =&gt; the directory that the key(s) are located (default is ./)
+* public_key =&gt; the public key (default is id_rsa.pub)
+* private_key =&gt; the private key (default is nil.. if there is no private key you will be able to encrypt but not decrypt strings)
+</code></pre>
+
+<p><strong>Credstore::Storage.new options:</strong></p>
+
+<pre><code>* keys_dir =&gt; the directory that the key(s) are located (default is ./)
+* database =&gt; the path to the storage file for your credstore (default is ./credstore.db)
+* public_key =&gt; the public key (default is id_rsa.pub)
+* private_key =&gt; the private key (default is id_rsa)
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/parabuzzle">parabuzzle</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
